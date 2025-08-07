@@ -94,9 +94,14 @@ contract DeliveryTracking {
     /// @param _status New status to update
     function updateStatus(
         string memory _packageId,
-        Status _status
+        Status _status,
+        string memory _meta
     ) external onlyAdmin {
         require(deliveries[_packageId].exists, "Package not found");
+
+        if (_status == Status.Delivered) {
+            deliveries[_packageId].meta = _meta;
+        }
 
         deliveries[_packageId].status = _status;
         emit StatusUpdated(_packageId, _status);
